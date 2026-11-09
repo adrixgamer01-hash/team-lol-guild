@@ -3,281 +3,232 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#071a35">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07152f">
 <title>TEAM LOL | Official Guild</title>
-
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root{
+--bg:#07152f;--panel:#102447;--blue:#168bff;
+--cyan:#55d8ff;--white:#f4f8ff;--muted:#a5bad8;
 }
-
-body {
-  background: #06152b;
-  color: white;
-  font-family: Arial, sans-serif;
-  overflow-x: hidden;
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+background:radial-gradient(ellipse at top,#163d70,#07152f 55%,#030a17);
+color:var(--white);font-family:Arial,sans-serif;min-height:100vh;
 }
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 6%;
-  background: #091e3b;
-  border-bottom: 1px solid #167bda;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+header{
+position:sticky;top:0;z-index:10;
+display:flex;justify-content:space-between;align-items:center;
+padding:17px 6%;background:#07152fee;
+border-bottom:1px solid #ffffff20;backdrop-filter:blur(12px);
 }
-
-.logo {
-  font-size: 25px;
-  font-weight: 900;
-  color: #35aaff;
-  letter-spacing: 2px;
+.logo{font-weight:900;font-size:22px;letter-spacing:2px}
+.logo span{color:var(--cyan)}
+nav{display:flex;gap:16px}
+nav a{color:#c5d9f5;text-decoration:none;font-size:13px;font-weight:bold}
+nav a:hover{color:var(--cyan)}
+.hero{text-align:center;padding:75px 18px 55px}
+.tag{
+display:inline-block;border:1px solid #55d8ff66;color:var(--cyan);
+padding:8px 15px;border-radius:30px;font-size:11px;letter-spacing:2px;
 }
-
-nav a {
-  color: white;
-  text-decoration: none;
-  margin-left: 20px;
-  font-size: 14px;
+.hero h1{font-size:clamp(42px,9vw,75px);margin:22px 0 12px;font-weight:1000}
+.hero h1 span{color:var(--cyan);text-shadow:0 0 25px #168bff}
+.hero p{color:var(--muted);line-height:1.7;font-size:15px}
+.btn{
+display:inline-block;padding:13px 23px;border-radius:8px;
+background:linear-gradient(100deg,#0878ed,#36c9ff);
+color:white;text-decoration:none;border:0;font-weight:bold;cursor:pointer;
 }
-
-.hero {
-  min-height: 570px;
-  padding: 100px 8%;
-  display: flex;
-  align-items: center;
-  background:
-    radial-gradient(ellipse at 80% 50%, #12569b66, transparent 55%),
-    linear-gradient(120deg, #06152b, #0b3260);
-  position: relative;
-  overflow: hidden;
+.hero .btn{margin-top:24px}
+.container{width:min(1050px,92%);margin:auto}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:20px 0 50px}
+.stat{
+padding:22px 8px;text-align:center;border-radius:12px;
+background:linear-gradient(145deg,#15345e,#0b1c38);
+border:1px solid #55baff35;
 }
-
-.hero::before {
-  content: "";
-  position: absolute;
-  width: 350px;
-  height: 350px;
-  right: -80px;
-  top: 70px;
-  border: 2px solid #29a8ff55;
-  border-radius: 50%;
-  box-shadow: 0 0 80px #168cff66;
-  animation: pulse 4s infinite alternate;
+.stat strong{display:block;color:var(--cyan);font-size:26px}
+.stat small{color:var(--muted);font-size:11px}
+section.content{padding:30px 0}
+.heading{font-size:25px;margin-bottom:9px}
+.heading span{color:var(--cyan)}
+.description{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:20px}
+.tabs{display:flex;flex-wrap:wrap;gap:9px;margin:20px 0}
+.tab{
+padding:11px 17px;border:1px solid #55baff35;
+background:#102447;color:#d5e8ff;border-radius:8px;cursor:pointer;font-weight:bold;
 }
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-  animation: appear 1s ease;
+.tab.active{background:var(--blue);color:white}
+.search{
+width:100%;padding:13px 15px;margin-bottom:17px;
+border-radius:8px;border:1px solid #55baff55;
+background:#0b1d39;color:white;outline:none;
 }
-
-.hero h1 {
-  font-size: clamp(55px, 10vw, 100px);
-  font-weight: 900;
-  color: white;
-  text-shadow: 0 0 25px #178cff88;
+.table-wrap{overflow-x:auto;border:1px solid #55baff35;border-radius:12px}
+table{width:100%;min-width:570px;border-collapse:collapse}
+th,td{padding:15px 12px;text-align:left;border-bottom:1px solid #ffffff15}
+th{font-size:11px;color:var(--cyan);background:#112b50}
+td{font-size:14px}
+.rank{color:var(--cyan);font-weight:900}
+.role{background:#168bff25;color:#76caff;padding:5px 9px;border-radius:20px;font-size:11px}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{
+padding:22px;background:#102447;border:1px solid #55baff30;
+border-radius:12px;
 }
-
-.hero h1 span {
-  color: #32aaff;
+.card h3{color:var(--cyan);margin-bottom:10px}
+.card p{font-size:14px;color:var(--muted);line-height:1.7}
+.join{
+margin:45px 0;padding:35px 18px;text-align:center;
+border:1px solid #55baff35;border-radius:14px;
+background:linear-gradient(120deg,#10376b,#102447);
 }
-
-.hero p {
-  margin: 20px 0;
-  color: #b8dfff;
-  font-size: 18px;
+.join p{color:var(--muted);margin:12px 0 20px}
+footer{text-align:center;padding:27px 12px;border-top:1px solid #ffffff20;color:var(--muted);font-size:12px;line-height:2}
+.admin-link{color:#7898c2;text-decoration:none;font-size:11px}
+#admin{display:none;padding:40px 0}
+.admin-box{max-width:550px;margin:auto;padding:24px;background:#102447;border:1px solid #55baff40;border-radius:12px}
+.admin-box input,.admin-box textarea{
+width:100%;padding:12px;margin:8px 0 15px;
+background:#07152f;color:white;border:1px solid #55baff45;border-radius:7px;
 }
-
-.btn {
-  display: inline-block;
-  padding: 14px 28px;
-  background: #168cff;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  box-shadow: 0 0 22px #168cff66;
-  transition: .3s;
-}
-
-.btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 35px #168cff;
-}
-
-section {
-  padding: 65px 6%;
-}
-
-.section-title {
-  text-align: center;
-  font-size: 32px;
-  margin-bottom: 35px;
-}
-
-.section-title span {
-  color: #32aaff;
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-}
-
-.card {
-  background: linear-gradient(145deg, #102d50, #091b34);
-  border: 1px solid #167bda88;
-  padding: 25px 12px;
-  border-radius: 15px;
-  text-align: center;
-  transition: .3s;
-  animation: appear 1s ease;
-}
-
-.card:hover {
-  transform: translateY(-7px);
-  border-color: #32aaff;
-  box-shadow: 0 0 25px #168cff44;
-}
-
-.card h3 {
-  color: #91cfff;
-  margin-bottom: 12px;
-}
-
-.card strong {
-  font-size: 27px;
-  color: #fff;
-}
-
-.ranking {
-  max-width: 800px;
-  margin: auto;
-}
-
-.rank-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 19px;
-  margin-bottom: 12px;
-  background: #102a49;
-  border: 1px solid #167bda66;
-  border-radius: 10px;
-  transition: .3s;
-}
-
-.rank-row:hover {
-  background: #16416c;
-  transform: scale(1.02);
-}
-
-.rank-row span:last-child {
-  color: #45b4ff;
-}
-
-footer {
-  text-align: center;
-  padding: 30px;
-  background: #091e3b;
-  color: #9fc9ee;
-  border-top: 1px solid #167bda;
-}
-
-@keyframes pulse {
-  from { transform: scale(.9); opacity: .4; }
-  to { transform: scale(1.15); opacity: 1; }
-}
-
-@keyframes appear {
-  from { opacity: 0; transform: translateY(25px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media(max-width: 650px) {
-  header { padding: 17px 5%; }
-  nav a { margin-left: 8px; font-size: 11px; }
-  .logo { font-size: 19px; }
-  .hero { min-height: 450px; padding: 70px 6%; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  section { padding: 45px 5%; }
+.admin-box label{font-size:13px;color:var(--muted)}
+.notice{font-size:12px;color:#ffd47b;line-height:1.6;margin-top:15px}
+@media(max-width:650px){
+header{padding:15px 4%}nav{gap:9px}nav a{font-size:11px}
+.logo{font-size:17px}.stats{gap:7px}.stat{padding:17px 5px}
+.stat strong{font-size:21px}.cards{grid-template-columns:1fr}
 }
 </style>
 </head>
-
 <body>
 
 <header>
-  <div class="logo">TEAM LOL</div>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#stats">Guild</a>
-    <a href="#ranking">Ranking</a>
-  </nav>
+<div class="logo">TEAM <span>LOL</span></div>
+<nav>
+<a href="#home">HOME</a>
+<a href="#rankings">RANKINGS</a>
+<a href="#about">ABOUT</a>
+</nav>
 </header>
 
-<main>
+<div id="publicSite">
 <section class="hero" id="home">
-  <div class="hero-content">
-    <h1>TEAM <span>LOL</span></h1>
-    <p>PLAY • GROW • WIN TOGETHER</p>
-    <p>Official Free Fire Gaming Guild</p>
-    <a href="#ranking" class="btn">EXPLORE GUILD</a>
-  </div>
+<div class="tag">FREE FIRE • OFFICIAL GUILD</div>
+<h1>TEAM <span>LOL</span></h1>
+<p id="heroText">Play Together. Grow Together. Rule Together.<br>Welcome to the official TEAM LOL guild website.</p>
+<a href="#rankings" class="btn">EXPLORE GUILD ↓</a>
 </section>
 
-<section id="stats">
-  <h2 class="section-title">GUILD <span>OVERVIEW</span></h2>
-  <div class="stats">
-    <div class="card">
-      <h3>Members</h3>
-      <strong>--</strong>
-    </div>
-    <div class="card">
-      <h3>Guild Glory</h3>
-      <strong>--</strong>
-    </div>
-    <div class="card">
-      <h3>Top Players</h3>
-      <strong>10</strong>
-    </div>
-    <div class="card">
-      <h3>Weekly Rank</h3>
-      <strong>--</strong>
-    </div>
-  </div>
+<main class="container">
+<div class="stats">
+<div class="stat"><strong id="memberCount">5</strong><small>GUILD MEMBERS</small></div>
+<div class="stat"><strong id="totalGlory">0</strong><small>WEEKLY GLORY</small></div>
+<div class="stat"><strong>TOP 10</strong><small>PLAYER RANKING</small></div>
+</div>
+
+<section class="content" id="rankings">
+<h2 class="heading">🏆 <span id="rankTitle">Guild Rankings</span></h2>
+<p class="description" id="rankDescription">Discover the best performing TEAM LOL players.</p>
+<div class="tabs">
+<button class="tab active" data-type="glory">Glory Ranking</button>
+<button class="tab" data-type="br">BR Rank</button>
+<button class="tab" data-type="cs">CS Rank</button>
+<button class="tab" data-type="top">Top 10</button>
+</div>
+<input class="search" id="search" placeholder="Search player name or UID...">
+<div class="table-wrap">
+<table><thead id="thead"></thead><tbody id="tbody"></tbody></table>
+</div>
 </section>
 
-<section id="ranking">
-  <h2 class="section-title">WEEKLY <span>RANKINGS</span></h2>
-  <div class="ranking">
-    <div class="rank-row">
-      <span>🏆 Glory Ranking</span>
-      <span>Coming Soon</span>
-    </div>
-    <div class="rank-row">
-      <span>⭐ Level Ranking</span>
-      <span>Coming Soon</span>
-    </div>
-    <div class="rank-row">
-      <span>👑 Top Players</span>
-      <span>Coming Soon</span>
-    </div>
-  </div>
+<section class="content" id="about">
+<h2 class="heading">👑 <span id="aboutTitle">About TEAM LOL</span></h2>
+<p class="description" id="aboutText">TEAM LOL is a Free Fire guild built around teamwork, competition and player growth. Together we aim higher.</p>
+<div class="cards">
+<div class="card"><h3>⚡ Our Mission</h3><p id="missionText">Build a strong team, improve skills and grow together.</p></div>
+<div class="card"><h3>🎮 Guild Roles</h3><p id="rolesText">Guild Leader • Co-Leader • Captain • Elite • Member.</p></div>
+<div class="card"><h3>🏆 Weekly Glory</h3><p id="gloryText">Compete every week and climb the glory leaderboard.</p></div>
+<div class="card"><h3>⚔️ BR & CS</h3><p id="rankText">Track Battle Royale and Clash Squad performance.</p></div>
+</div>
+</section>
+
+<section class="join">
+<h2 id="joinTitle">WANT TO JOIN TEAM LOL?</h2>
+<p id="joinText">Play smart. Stay active. Grow with the guild.</p>
+<a href="#about" class="btn" id="joinButton">EXPLORE OUR GUILD</a>
 </section>
 </main>
+</div>
+
+<section class="container" id="admin">
+<div class="admin-box">
+<h2 style="margin-bottom:15px">🔐 TEAM LOL Admin</h2>
+<p class="description">Admin login will be activated after Supabase authentication setup.</p>
+<label>Admin Email</label>
+<input type="email" placeholder="Your Gmail" disabled>
+<label>Password</label>
+<input type="password" placeholder="Your password" disabled>
+<button class="btn" disabled>LOGIN (SETUP REQUIRED)</button>
+<p class="notice">This is only a placeholder interface. It does not authenticate anyone or save changes yet. We will connect secure Supabase login and database before enabling admin editing.</p>
+</div>
+</section>
 
 <footer>
-  © 2026 TEAM LOL | Official Guild Website
+<strong>TEAM LOL</strong><br>
+Free Fire Guild • Play Together, Grow Together<br>
+© <span id="year"></span> TEAM LOL<br>
+<a class="admin-link" href="#admin" onclick="showAdmin()">Admin Access</a>
 </footer>
 
+<script>
+const players=[
+{name:"Player One",uid:"123456789",glory:1200,br:"Heroic",cs:"Master",role:"Guild Leader"},
+{name:"Player Two",uid:"234567891",glory:950,br:"Diamond",cs:"Elite",role:"Co-Leader"},
+{name:"Player Three",uid:"345678912",glory:800,br:"Heroic",cs:"Master",role:"Captain"},
+{name:"Player Four",uid:"456789123",glory:650,br:"Platinum",cs:"Diamond",role:"Elite"},
+{name:"Player Five",uid:"567891234",glory:500,br:"Diamond",cs:"Platinum",role:"Member"}
+];
+
+let type="glory";
+const columns={
+glory:["RANK","PLAYER","UID","WEEKLY GLORY","ROLE"],
+br:["RANK","PLAYER","UID","BR RANK","ROLE"],
+cs:["RANK","PLAYER","UID","CS RANK","ROLE"],
+top:["RANK","PLAYER","UID","GLORY","BR RANK","CS RANK"]
+};
+
+function render(){
+const q=document.getElementById("search").value.toLowerCase();
+let data=[...players];
+if(type==="glory"||type==="top")data.sort((a,b)=>b.glory-a.glory);
+if(type==="br")data.sort((a,b)=>a.br.localeCompare(b.br));
+if(type==="cs")data.sort((a,b)=>a.cs.localeCompare(b.cs));
+data=data.filter(p=>p.name.toLowerCase().includes(q)||p.uid.includes(q));
+if(type==="top")data=data.slice(0,10);
+document.getElementById("thead").innerHTML="<tr>"+columns[type].map(c=>"<th>"+c+"</th>").join("")+"</tr>";
+document.getElementById("tbody").innerHTML=data.length?data.map((p,i)=>{
+let values=type==="glory"?[p.glory,p.role]:
+type==="br"?[p.br,p.role]:
+type==="cs"?[p.cs,p.role]:[p.glory,p.br,p.cs];
+return `<tr><td class="rank">#${i+1}</td><td><b>${p.name}</b></td><td>${p.uid}</td>${values.map((v,j)=>`<td>${(j===values.length-1&&type!=="top"&&type!=="glory")||type==="glory"&&j===1?`<span class="role">${v}</span>`:v}</td>`).join("")}</tr>`;
+}).join(""):'<tr><td colspan="6" style="padding:25px">No players found.</td></tr>';
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
+document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+b.classList.add("active");type=b.dataset.type;render();
+}));
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("memberCount").textContent=players.length;
+document.getElementById("totalGlory").textContent=players.reduce((s,p)=>s+p.glory,0).toLocaleString("en-IN");
+document.getElementById("year").textContent=new Date().getFullYear();
+function showAdmin(){
+document.getElementById("publicSite").style.display="none";
+document.getElementById("admin").style.display="block";
+}
+if(location.hash==="#admin")showAdmin();
+render();
+</script>
 </body>
 </html>
