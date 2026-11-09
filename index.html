@@ -230,5 +230,18 @@ document.getElementById("admin").style.display="block";
 if(location.hash==="#admin")showAdmin();
 render();
 </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://itvyprizyhpfkgwloiay.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_rXPkclF22FWBLCmBB_5lJg_hL-BsJF9";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+console.log("TEAM LOL Supabase connected!");
+</script>
 </body>
 </html>
