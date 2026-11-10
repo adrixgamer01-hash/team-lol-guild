@@ -654,7 +654,7 @@ document.getElementById("adminLogout").addEventListener("click", async function(
 })();
 </script>
 
-  
+
 <style>
 #tlMusicBtn {
   position: fixed;
@@ -697,7 +697,7 @@ document.getElementById("adminLogout").addEventListener("click", async function(
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
-    osc.type = type || "triangle";
+    osc.type = type;
     osc.frequency.setValueAtTime(freq, time);
 
     gain.gain.setValueAtTime(0.001, time);
@@ -719,16 +719,16 @@ document.getElementById("adminLogout").addEventListener("click", async function(
     const t = ctx.currentTime + 0.02;
 
     if (step % 4 === 0) {
-      note(55, t, 0.32, 0.12, "sawtooth");
+      note(110, t, 0.25, 0.09, "triangle");
     }
 
     if (step % 2 === 0) {
       const n = melody[(step / 2) % melody.length];
-      note(n, t, 0.22, 0.035, "triangle");
+      note(n, t, 0.22, 0.13, "triangle");
     }
 
     if (step % 4 === 2) {
-      note(110, t, 0.10, 0.04, "square");
+      note(220, t, 0.10, 0.045, "square");
     }
 
     step++;
@@ -736,24 +736,25 @@ document.getElementById("adminLogout").addEventListener("click", async function(
 
   async function startMusic() {
     if (!ctx) {
-      ctx = new (window.AudioContext ||
-        window.webkitAudioContext)();
+      const AudioContext =
+        window.AudioContext || window.webkitAudioContext;
 
+      ctx = new AudioContext();
       master = ctx.createGain();
-      master.gain.value = 0.035;
+      master.gain.value = 0.20;
       master.connect(ctx.destination);
     }
 
     await ctx.resume();
 
-    master.gain.setTargetAtTime(
-      0.035, ctx.currentTime, 0.1
-    );
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setTargetAtTime(0.20, ctx.currentTime, 0.1);
 
     playing = true;
     step = 0;
     playStep();
 
+    clearInterval(timer);
     timer = setInterval(playStep, beat * 500);
 
     btn.textContent = "🎵 MUSIC ON";
@@ -765,23 +766,27 @@ document.getElementById("adminLogout").addEventListener("click", async function(
     timer = null;
 
     if (master && ctx) {
-      master.gain.setTargetAtTime(
-        0.001, ctx.currentTime, 0.08
-      );
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setTargetAtTime(0.001, ctx.currentTime, 0.08);
     }
 
     btn.textContent = "🎵 MUSIC OFF";
   }
 
   btn.addEventListener("click", async () => {
-    if (playing) {
-      stopMusic();
-    } else {
-      await startMusic();
+    try {
+      if (playing) {
+        stopMusic();
+      } else {
+        await startMusic();
+      }
+    } catch (error) {
+      btn.textContent = "⚠️ AUDIO ERROR";
+      console.error("TEAM LOL music:", error);
     }
   });
 })();
-</script>
+</script>  
 
 </body>
 </html>
