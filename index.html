@@ -235,14 +235,7 @@ Free Fire Guild • Play Together, Grow Together<br>
 </footer>
 
 <script>
-let players=[
-{name:"Player One",uid:"123456789",glory:1200,br:"Heroic",cs:"Master",role:"Guild Leader"},
-{name:"Player Two",uid:"234567891",glory:950,br:"Diamond",cs:"Elite",role:"Co-Leader"},
-{name:"Player Three",uid:"345678912",glory:800,br:"Heroic",cs:"Master",role:"Captain"},
-{name:"Player Four",uid:"456789123",glory:650,br:"Platinum",cs:"Diamond",role:"Elite"},
-{name:"Player Five",uid:"567891234",glory:500,br:"Diamond",cs:"Platinum",role:"Member"}
-];
-
+let players=[];
 let type="glory";
 const columns={
 glory:["RANK","PLAYER","UID","WEEKLY GLORY","ROLE"],
@@ -254,26 +247,35 @@ top:["RANK","PLAYER","UID","GLORY","BR RANK","CS RANK"]
 function render(){
 const q=document.getElementById("search").value.toLowerCase();
 let data=[...players];
+
 if(type==="glory"||type==="top")data.sort((a,b)=>b.glory-a.glory);
 if(type==="br")data.sort((a,b)=>a.br.localeCompare(b.br));
 if(type==="cs")data.sort((a,b)=>a.cs.localeCompare(b.cs));
+
 data=data.filter(p=>p.name.toLowerCase().includes(q)||p.uid.includes(q));
+
 if(type==="top")data=data.slice(0,10);
+
 document.getElementById("thead").innerHTML="<tr>"+columns[type].map(c=>"<th>"+c+"</th>").join("")+"</tr>";
+
 document.getElementById("tbody").innerHTML=data.length?data.map((p,i)=>{
 let values=type==="glory"?[p.glory,p.role]:
 type==="br"?[p.br,p.role]:
 type==="cs"?[p.cs,p.role]:[p.glory,p.br,p.cs];
+
 return `<tr><td class="rank">#${i+1}</td><td><b>${p.name}</b></td><td>${p.uid}</td>${values.map((v,j)=>`<td>${(j===values.length-1&&type!=="top"&&type!=="glory")||type==="glory"&&j===1?`<span class="role">${v}</span>`:v}</td>`).join("")}</tr>`;
 }).join(""):'<tr><td colspan="6" style="padding:25px">No players found.</td></tr>';
+
+document.getElementById("memberCount").textContent=players.length;
+
+document.getElementById("totalGlory").textContent=
+players.reduce((s,p)=>s+Number(p.glory||0),0).toLocaleString("en-IN");
 }
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
 document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
 b.classList.add("active");type=b.dataset.type;render();
 }));
 document.getElementById("search").addEventListener("input",render);
-document.getElementById("memberCount").textContent=players.length;
-document.getElementById("totalGlory").textContent=players.reduce((s,p)=>s+p.glory,0).toLocaleString("en-IN");
 document.getElementById("year").textContent=new Date().getFullYear();
 function showAdmin(){
   document.getElementById("publicSite").style.display = "none";
