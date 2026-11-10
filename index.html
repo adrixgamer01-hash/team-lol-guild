@@ -180,11 +180,50 @@ header{padding:15px 4%}nav{gap:9px}nav a{font-size:11px}
 
     <p id="adminMessage" class="notice"></p>
 
-    <div id="adminDashboard" hidden>
-      <h3>Welcome, Admin!</h3>
-      <p>Admin access verified.</p>
-      <button class="btn" id="adminLogout" type="button">LOGOUT</button>
-    </div>
+  
+<div id="adminDashboard" hidden>
+  <h3>Welcome, Admin!</h3>
+  <p>Admin access verified.</p>
+
+  <h3>👥 Player Management</h3>
+
+  <form id="playerForm">
+    <input type="hidden" id="playerId">
+
+    <label>Player Name</label>
+    <input id="playerName" type="text" required>
+
+    <label>Player UID</label>
+    <input id="playerUid" type="text" required>
+
+    <label>Glory Points</label>
+    <input id="playerGlory" type="number" min="0" value="0" required>
+
+    <label>BR Rank</label>
+    <input id="playerBR" type="text" required>
+
+    <label>CS Rank</label>
+    <input id="playerCS" type="text" required>
+
+    <label>Guild Role</label>
+    <input id="playerRole" type="text" value="Member" required>
+
+    <button class="btn" type="submit">SAVE PLAYER</button>
+
+    <button class="btn" type="button" id="cancelPlayerEdit">
+      CLEAR FORM
+    </button>
+  </form>
+
+  <p id="playerMessage" class="notice"></p>
+
+  <h3>📋 Existing Players</h3>
+  <div id="playerList">Loading players...</div>
+
+  <button class="btn" id="adminLogout" type="button">
+    LOGOUT
+  </button>
+</div>  
   </div>
 </section>
 
