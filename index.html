@@ -276,9 +276,24 @@ document.getElementById("memberCount").textContent=players.length;
 document.getElementById("totalGlory").textContent=players.reduce((s,p)=>s+p.glory,0).toLocaleString("en-IN");
 document.getElementById("year").textContent=new Date().getFullYear();
 function showAdmin(){
-document.getElementById("publicSite").style.display="none";
-document.getElementById("admin").style.display="block";
+  document.getElementById("publicSite").style.display = "none";
+  document.getElementById("admin").style.display = "block";
+  window.scrollTo(0, 0);
 }
+
+function showHome(){
+  document.getElementById("admin").style.display = "none";
+  document.getElementById("publicSite").style.display = "block";
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener("hashchange", function(){
+  if(location.hash === "#admin"){
+    showAdmin();
+  } else {
+    showHome();
+  }
+});
 if(location.hash==="#admin")showAdmin();
 render();
 </script>
