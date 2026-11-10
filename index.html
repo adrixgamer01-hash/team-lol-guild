@@ -235,7 +235,7 @@ Free Fire Guild • Play Together, Grow Together<br>
 </footer>
 
 <script>
-const players=[
+let players=[
 {name:"Player One",uid:"123456789",glory:1200,br:"Heroic",cs:"Master",role:"Guild Leader"},
 {name:"Player Two",uid:"234567891",glory:950,br:"Diamond",cs:"Elite",role:"Co-Leader"},
 {name:"Player Three",uid:"345678912",glory:800,br:"Heroic",cs:"Master",role:"Captain"},
@@ -295,6 +295,31 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
+
+async function loadHomePlayers() {
+  const { data, error } = await supabaseClient
+    .from("players")
+    .select("name,uid,glory,br_rank,cs_rank,guild_role")
+    .eq("active", true);
+
+  if (error) {
+    console.error("Home players error:", error.message);
+    return;
+  }
+
+  players = data.map(p => ({
+    name: p.name,
+    uid: String(p.uid),
+    glory: Number(p.glory || 0),
+    br: p.br_rank || "",
+    cs: p.cs_rank || "",
+    role: p.guild_role || "Member"
+  }));
+
+  render();
+}
+
+loadHomePlayers();
 
 const loginForm = document.getElementById("adminLoginForm");
 const message = document.getElementById("adminMessage");
