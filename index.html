@@ -295,9 +295,94 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
+
 const loginForm = document.getElementById("adminLoginForm");
 const message = document.getElementById("adminMessage");
 const dashboard = document.getElementById("adminDashboard");
+
+const playerForm = document.getElementById("playerForm");
+const playerMessage = document.getElementById("playerMessage");
+const playerList = document.getElementById("playerList");
+
+async function loadPlayers() {
+  playerList.textContent = "Loading players...";
+
+  const { data, error } = await supabaseClient
+    .from("players")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    playerList.textContent = "Error loading players: " + error.message;
+    return;
+  }
+
+  playerList.replaceChildren();
+
+  if (!data || data.length === 0) {
+    playerList.textContent = "No players found.";
+    return;
+  }
+
+  data.forEach(function(player) {
+    const item = document.createElement("div");
+    item.style.padding = "12px";
+    item.style.margin = "10px 0";
+    item.style.border = "1px solid #ccc";
+    item.style.borderRadius = "8px";
+
+    const details = document.createElement("p");
+    details.textContent =
+      player.name + " | UID: " + player.uid +
+      " | Glory: " + player.glory +
+      " | BR: " + player.br_rank +
+      " | CS: " + player.cs_rank +
+      " | Role: " + player.guild_role;
+
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.className = "btn";
+    editButton.textContent = "EDIT";
+
+    editButton.addEventListener("click", function() {
+      document.getElementById("playerId").value = player.id;
+      document.getElementById("playerName").value = player.name || "";
+      document.getElementById("playerUid").value = player.uid || "";
+      document.getElementById("playerGlory").value = player.glory || 0;
+      document.getElementById("playerBR").value = player.br_rank || "";
+      document.getElementById("playerCS").value = player.cs_rank || "";
+      document.getElementById("playerRole").value = player.guild_role || "Member";
+
+      playerMessage.textContent = "Editing " + player.name;
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "btn";
+    deleteButton.textContent = "DELETE";
+
+    deleteButton.addEventListener("click", async function() {
+      const confirmed = confirm("Delete " + player.name + "?");
+      if (!confirmed) return;
+
+      const { error } = await supabaseClient
+        .from("players")
+        .delete()
+        .eq("id", player.id);
+
+      if (error) {
+        playerMessage.textContent = "Delete failed: " + error.message;
+        return;
+      }
+
+      playerMessage.textContent = "Player deleted successfully.";
+      loadPlayers();
+    });
+
+    item.append(details, editButton, deleteButton);
+    playerList.appendChild(item);
+  });
+}
 
 loginForm.addEventListener("submit", async function(e) {
   e.preventDefault();
@@ -307,11 +392,10 @@ loginForm.addEventListener("submit", async function(e) {
 
   message.textContent = "Checking login...";
 
-  const { data, error } =
-    await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
 
   if (error) {
     message.textContent = "Login failed. Check email and password.";
@@ -330,13 +414,73 @@ loginForm.addEventListener("submit", async function(e) {
   loginForm.hidden = true;
   dashboard.hidden = false;
   message.textContent = "Admin login successful!";
+
+  await loadPlayers();
+});
+
+playerForm.addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const playerId = document.getElementById("playerId").value;
+
+  const playerData = {
+    name: document.getElementById("playerName").value.trim(),
+    uid: document.getElementById("playerUid").value.trim(),
+    glory: Number(document.getElementById("playerGlory").value),
+    br_rank: document.getElementById("playerBR").value.trim(),
+    cs_rank: document.getElementById("playerCS").value.trim(),
+    guild_role: document.getElementById("playerRole").value.trim()
+  };
+
+  playerMessage.textContent = "Saving player...";
+
+  let result;
+
+  if (playerId) {
+    result = await supabaseClient
+      .from("players")
+      .update(playerData)
+      .eq("id", playerId);
+  } else {
+    result = await supabaseClient
+      .from("players")
+      .insert([playerData]);
+  }
+
+  if (result.error) {
+    playerMessage.textContent = "Save failed: " + result.error.message;
+    return;
+  }
+
+  playerMessage.textContent = playerId
+    ? "Player updated successfully!"
+    : "Player added successfully!";
+
+  playerForm.reset();
+  document.getElementById("playerId").value = "";
+  document.getElementById("playerGlory").value = 0;
+  document.getElementById("playerRole").value = "Member";
+
+  await loadPlayers();
+});
+
+document.getElementById("cancelPlayerEdit").addEventListener("click", function() {
+  playerForm.reset();
+  document.getElementById("playerId").value = "";
+  document.getElementById("playerGlory").value = 0;
+  document.getElementById("playerRole").value = "Member";
+  playerMessage.textContent = "Form cleared.";
 });
 
 document.getElementById("adminLogout").addEventListener("click", async function() {
   await supabaseClient.auth.signOut();
+
   loginForm.hidden = false;
   dashboard.hidden = true;
+  playerForm.reset();
+  playerList.replaceChildren();
   message.textContent = "Logged out successfully.";
+  playerMessage.textContent = "";
 });
 </script>
 </body>
