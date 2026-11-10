@@ -654,5 +654,134 @@ document.getElementById("adminLogout").addEventListener("click", async function(
 })();
 </script>
 
+  
+<style>
+#tlMusicBtn {
+  position: fixed;
+  left: 14px;
+  bottom: 18px;
+  z-index: 99999;
+  background: #102447;
+  color: white;
+  border: 1px solid #168bff;
+  border-radius: 30px;
+  padding: 12px 16px;
+  font-weight: bold;
+  box-shadow: 0 0 12px #168bff55;
+}
+</style>
+
+<button id="tlMusicBtn" type="button">🎵 MUSIC OFF</button>
+
+<script>
+(() => {
+  const btn = document.getElementById("tlMusicBtn");
+
+  let ctx = null;
+  let master = null;
+  let timer = null;
+  let step = 0;
+  let playing = false;
+
+  const bpm = 105;
+  const beat = 60 / bpm;
+
+  const melody = [
+    392, 523, 659, 523,
+    440, 587, 698, 587,
+    392, 523, 659, 784,
+    659, 587, 523, 440
+  ];
+
+  function note(freq, time, duration, volume, type) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = type || "triangle";
+    osc.frequency.setValueAtTime(freq, time);
+
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.linearRampToValueAtTime(volume, time + 0.025);
+    gain.gain.exponentialRampToValueAtTime(
+      0.001, time + duration
+    );
+
+    osc.connect(gain);
+    gain.connect(master);
+
+    osc.start(time);
+    osc.stop(time + duration + 0.03);
+  }
+
+  function playStep() {
+    if (!playing) return;
+
+    const t = ctx.currentTime + 0.02;
+
+    if (step % 4 === 0) {
+      note(55, t, 0.32, 0.12, "sawtooth");
+    }
+
+    if (step % 2 === 0) {
+      const n = melody[(step / 2) % melody.length];
+      note(n, t, 0.22, 0.035, "triangle");
+    }
+
+    if (step % 4 === 2) {
+      note(110, t, 0.10, 0.04, "square");
+    }
+
+    step++;
+  }
+
+  async function startMusic() {
+    if (!ctx) {
+      ctx = new (window.AudioContext ||
+        window.webkitAudioContext)();
+
+      master = ctx.createGain();
+      master.gain.value = 0.035;
+      master.connect(ctx.destination);
+    }
+
+    await ctx.resume();
+
+    master.gain.setTargetAtTime(
+      0.035, ctx.currentTime, 0.1
+    );
+
+    playing = true;
+    step = 0;
+    playStep();
+
+    timer = setInterval(playStep, beat * 500);
+
+    btn.textContent = "🎵 MUSIC ON";
+  }
+
+  function stopMusic() {
+    playing = false;
+    clearInterval(timer);
+    timer = null;
+
+    if (master && ctx) {
+      master.gain.setTargetAtTime(
+        0.001, ctx.currentTime, 0.08
+      );
+    }
+
+    btn.textContent = "🎵 MUSIC OFF";
+  }
+
+  btn.addEventListener("click", async () => {
+    if (playing) {
+      stopMusic();
+    } else {
+      await startMusic();
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
